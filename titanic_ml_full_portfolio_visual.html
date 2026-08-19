@@ -1,0 +1,360 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-sans);}
+.wrap{padding:1.5rem 0 2rem;}
+.top-header{background:#0d1b2a;border-radius:12px;padding:1.5rem 2rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;}
+.top-title{color:#ffffff;font-size:20px;font-weight:500;}
+.top-sub{color:#8ab4d4;font-size:13px;margin-top:4px;}
+.top-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.badge{background:rgba(255,255,255,0.1);color:#c8dff0;font-size:11px;padding:4px 10px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.15);}
+.badge.gold{background:rgba(255,196,0,0.15);color:#ffd860;border-color:rgba(255,196,0,0.3);}
+
+.section-title{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin:1.25rem 0 0.6rem;}
+
+.eda-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.chart-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;}
+.chart-title{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:10px;}
+
+.bar-group{display:flex;flex-direction:column;gap:6px;}
+.bar-item{display:flex;align-items:center;gap:8px;}
+.bar-label{font-size:11px;color:var(--text-muted);width:68px;flex-shrink:0;text-align:right;}
+.bar-track{flex:1;height:16px;background:var(--surface-0);border-radius:4px;overflow:hidden;display:flex;}
+.bar-seg{height:100%;display:flex;align-items:center;justify-content:center;}
+.bar-val{font-size:10px;font-weight:500;}
+.bar-count{font-size:11px;color:var(--text-muted);width:36px;text-align:right;flex-shrink:0;}
+
+.models-section{margin-bottom:0;}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.model-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.1rem;}
+.model-card.winner{border:2px solid #2a78d6;}
+.model-name-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.model-name{font-size:13px;font-weight:500;color:var(--text-primary);}
+.winner-chip{background:#e6f1fb;color:#0c447c;font-size:10px;padding:2px 8px;border-radius:20px;}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px;}
+.cm-cell{border-radius:6px;padding:6px 4px;text-align:center;}
+.cm-cell .num{font-size:15px;font-weight:500;}
+.cm-cell .lbl{font-size:9px;margin-top:1px;}
+.cm-tn{background:#e8f5e9;}.cm-tn .num{color:#2e7d32;}.cm-tn .lbl{color:#4caf50;}
+.cm-fp{background:#fff3e0;}.cm-fp .num{color:#e65100;}.cm-fp .lbl{color:#ff9800;}
+.cm-fn{background:#fff3e0;}.cm-fn .num{color:#e65100;}.cm-fn .lbl{color:#ff9800;}
+.cm-tp{background:#e3f2fd;}.cm-tp .num{color:#1565c0;}.cm-tp .lbl{color:#42a5f5;}
+.acc-row{display:flex;align-items:center;gap:6px;}
+.acc-label{font-size:11px;color:var(--text-muted);flex-shrink:0;}
+.acc-track{flex:1;height:6px;background:var(--surface-0);border-radius:3px;overflow:hidden;}
+.acc-fill{height:100%;border-radius:3px;background:#2a78d6;}
+.acc-fill.best{background:#1565c0;}
+.acc-val{font-size:12px;font-weight:500;color:var(--text-primary);width:36px;text-align:right;flex-shrink:0;}
+
+.ensemble-section{margin-top:10px;}
+.ensemble-card{background:#0d1b2a;border-radius:12px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;align-items:center;}
+.ens-cm{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.ens-cell{border-radius:6px;padding:8px 6px;text-align:center;}
+.ens-tn{background:rgba(46,125,50,0.25);}.ens-tn .num{color:#81c784;font-size:18px;font-weight:500;}.ens-tn .lbl{color:#66bb6a;font-size:9px;}
+.ens-fp{background:rgba(230,81,0,0.2);}.ens-fp .num{color:#ffb74d;font-size:18px;font-weight:500;}.ens-fp .lbl{color:#ffa726;font-size:9px;}
+.ens-fn{background:rgba(230,81,0,0.2);}.ens-fn .num{color:#ffb74d;font-size:18px;font-weight:500;}.ens-fn .lbl{color:#ffa726;font-size:9px;}
+.ens-tp{background:rgba(21,101,192,0.3);}.ens-tp .num{color:#64b5f6;font-size:18px;font-weight:500;}.ens-tp .lbl{color:#42a5f5;font-size:9px;}
+.ens-metric{text-align:center;}
+.ens-metric .val{font-size:26px;font-weight:500;color:#ffffff;}
+.ens-metric .key{font-size:11px;color:#8ab4d4;margin-top:3px;}
+.ens-metric .highlight{color:#ffd860;}
+
+.prob-section{margin-top:10px;}
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.prob-card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:0.875rem 1rem;}
+.prob-title{font-size:11px;font-weight:500;color:var(--text-secondary);margin-bottom:8px;}
+.dist-visual{position:relative;height:48px;}
+.dist-bar-wrap{display:flex;gap:2px;height:100%;align-items:flex-end;}
+.dist-bar{border-radius:2px 2px 0 0;flex:1;}
+.prob-legend{display:flex;gap:10px;margin-top:6px;}
+.prob-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted);}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+.footer-row{margin-top:1rem;display:flex;justify-content:space-between;align-items:center;}
+.tools{display:flex;gap:6px;flex-wrap:wrap;}
+.tool-chip{background:var(--surface-0);border:0.5px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-secondary);padding:4px 10px;}
+.footer-note{font-size:11px;color:var(--text-muted);}
+</style>
+
+<div class="wrap">
+
+<div class="top-header">
+  <div>
+    <div class="top-title">🚢 Titanic Survival Prediction</div>
+    <div class="top-sub">End-to-end machine learning · 891 passengers · 6 classifiers + ensemble</div>
+  </div>
+  <div class="top-badges">
+    <span class="badge">Feature Engineering</span>
+    <span class="badge">6 ML Models</span>
+    <span class="badge">Soft-Voting Ensemble</span>
+    <span class="badge gold">Best Acc: 82.7%</span>
+  </div>
+</div>
+
+<div class="section-title">Exploratory data analysis</div>
+<div class="eda-grid">
+  <div class="chart-card">
+    <div class="chart-title">Survival count by gender</div>
+    <div class="bar-group">
+      <div class="bar-item">
+        <span class="bar-label">Died</span>
+        <div class="bar-track">
+          <div class="bar-seg" style="width:85%;background:#5DCAA5;"><span class="bar-val" style="color:#085041;">468</span></div>
+          <div class="bar-seg" style="width:15%;background:#F0997B;"><span class="bar-val" style="color:#712B13;">81</span></div>
+        </div>
+        <span class="bar-count">549</span>
+      </div>
+      <div class="bar-item">
+        <span class="bar-label">Survived</span>
+        <div class="bar-track">
+          <div class="bar-seg" style="width:32%;background:#5DCAA5;"><span class="bar-val" style="color:#085041;">109</span></div>
+          <div class="bar-seg" style="width:68%;background:#F0997B;"><span class="bar-val" style="color:#712B13;">233</span></div>
+        </div>
+        <span class="bar-count">342</span>
+      </div>
+    </div>
+    <div class="prob-legend" style="margin-top:8px;">
+      <div class="prob-leg-item"><div class="leg-dot" style="background:#5DCAA5;"></div>Male</div>
+      <div class="prob-leg-item"><div class="leg-dot" style="background:#F0997B;"></div>Female</div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Survival count by passenger class</div>
+    <div class="bar-group">
+      <div class="bar-item">
+        <span class="bar-label">Died</span>
+        <div class="bar-track">
+          <div class="bar-seg" style="width:14.5%;background:#F09595;"><span class="bar-val" style="color:#791F1F;font-size:9px;">80</span></div>
+          <div class="bar-seg" style="width:17.7%;background:#85B7EB;"><span class="bar-val" style="color:#0C447C;font-size:9px;">97</span></div>
+          <div class="bar-seg" style="width:67.8%;background:#C0DD97;"><span class="bar-val" style="color:#27500A;font-size:9px;">372</span></div>
+        </div>
+        <span class="bar-count">549</span>
+      </div>
+      <div class="bar-item">
+        <span class="bar-label">Survived</span>
+        <div class="bar-track">
+          <div class="bar-seg" style="width:39.8%;background:#F09595;"><span class="bar-val" style="color:#791F1F;font-size:9px;">136</span></div>
+          <div class="bar-seg" style="width:25.4%;background:#85B7EB;"><span class="bar-val" style="color:#0C447C;font-size:9px;">87</span></div>
+          <div class="bar-seg" style="width:34.8%;background:#C0DD97;"><span class="bar-val" style="color:#27500A;font-size:9px;">119</span></div>
+        </div>
+        <span class="bar-count">342</span>
+      </div>
+    </div>
+    <div class="prob-legend" style="margin-top:8px;">
+      <div class="prob-leg-item"><div class="leg-dot" style="background:#F09595;"></div>1st class</div>
+      <div class="prob-leg-item"><div class="leg-dot" style="background:#85B7EB;"></div>2nd class</div>
+      <div class="prob-leg-item"><div class="leg-dot" style="background:#C0DD97;"></div>3rd class</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Model results — confusion matrices</div>
+<div class="models-grid">
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">Logistic Regression</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">98</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">12</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">23</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">46</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:80.4%"></div></div><span class="acc-val">80.4%</span></div>
+  </div>
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">KNN (Scaled)</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">98</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">12</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">21</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">48</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:81.6%"></div></div><span class="acc-val">81.6%</span></div>
+  </div>
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">Naive Bayes</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">92</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">18</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">21</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">48</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:78.2%"></div></div><span class="acc-val">78.2%</span></div>
+  </div>
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">SVM (Scaled)</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">102</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">8</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">26</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">43</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:81.0%"></div></div><span class="acc-val">81.0%</span></div>
+  </div>
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">Random Forest</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">96</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">14</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">22</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">47</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:79.9%"></div></div><span class="acc-val">79.9%</span></div>
+  </div>
+
+  <div class="model-card">
+    <div class="model-name-row"><span class="model-name">XGBoost</span></div>
+    <div class="cm-grid">
+      <div class="cm-cell cm-tn"><div class="num">99</div><div class="lbl">TN</div></div>
+      <div class="cm-cell cm-fp"><div class="num">11</div><div class="lbl">FP</div></div>
+      <div class="cm-cell cm-fn"><div class="num">26</div><div class="lbl">FN</div></div>
+      <div class="cm-cell cm-tp"><div class="num">43</div><div class="lbl">TP</div></div>
+    </div>
+    <div class="acc-row"><span class="acc-label">Acc</span><div class="acc-track"><div class="acc-fill" style="width:79.3%"></div></div><span class="acc-val">79.3%</span></div>
+  </div>
+
+</div>
+
+<div class="section-title">Prediction probability distribution (simplified)</div>
+<div class="prob-grid">
+  <div class="prob-card">
+    <div class="prob-title">Logistic Regression</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.8;"></div>
+      <div class="dist-bar" style="height:85%;background:#F09595;opacity:0.7;"></div>
+      <div class="dist-bar" style="height:70%;background:#F09595;opacity:0.6;"></div>
+      <div class="dist-bar" style="height:40%;background:#a0a0a0;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:30%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:20%;background:#97C459;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:40%;background:#97C459;opacity:0.6;"></div>
+      <div class="dist-bar" style="height:55%;background:#97C459;opacity:0.7;"></div>
+      <div class="dist-bar" style="height:65%;background:#97C459;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:50%;background:#97C459;opacity:0.65;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+  <div class="prob-card">
+    <div class="prob-title">KNN (Scaled)</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.9;"></div>
+      <div class="dist-bar" style="height:85%;background:#F09595;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:62%;background:#F09595;opacity:0.6;"></div>
+      <div class="dist-bar" style="height:20%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:15%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:25%;background:#97C459;opacity:0.55;"></div>
+      <div class="dist-bar" style="height:42%;background:#97C459;opacity:0.65;"></div>
+      <div class="dist-bar" style="height:55%;background:#97C459;opacity:0.7;"></div>
+      <div class="dist-bar" style="height:65%;background:#97C459;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:60%;background:#97C459;opacity:0.7;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+  <div class="prob-card">
+    <div class="prob-title">Naive Bayes</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.9;"></div>
+      <div class="dist-bar" style="height:45%;background:#F09595;opacity:0.65;"></div>
+      <div class="dist-bar" style="height:30%;background:#F09595;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:28%;background:#F09595;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:10%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:10%;background:#a0a0a0;opacity:0.35;"></div>
+      <div class="dist-bar" style="height:12%;background:#97C459;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:18%;background:#97C459;opacity:0.55;"></div>
+      <div class="dist-bar" style="height:32%;background:#97C459;opacity:0.65;"></div>
+      <div class="dist-bar" style="height:60%;background:#97C459;opacity:0.8;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+  <div class="prob-card">
+    <div class="prob-title">SVM (Scaled)</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:95%;background:#F09595;opacity:0.85;"></div>
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.9;"></div>
+      <div class="dist-bar" style="height:75%;background:#F09595;opacity:0.7;"></div>
+      <div class="dist-bar" style="height:30%;background:#F09595;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:10%;background:#a0a0a0;opacity:0.3;"></div>
+      <div class="dist-bar" style="height:5%;background:#a0a0a0;opacity:0.3;"></div>
+      <div class="dist-bar" style="height:8%;background:#97C459;opacity:0.45;"></div>
+      <div class="dist-bar" style="height:20%;background:#97C459;opacity:0.55;"></div>
+      <div class="dist-bar" style="height:55%;background:#97C459;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:65%;background:#97C459;opacity:0.78;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+  <div class="prob-card">
+    <div class="prob-title">Random Forest</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:70%;background:#F09595;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.9;"></div>
+      <div class="dist-bar" style="height:85%;background:#F09595;opacity:0.8;"></div>
+      <div class="dist-bar" style="height:45%;background:#a0a0a0;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:22%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:18%;background:#97C459;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:25%;background:#97C459;opacity:0.55;"></div>
+      <div class="dist-bar" style="height:45%;background:#97C459;opacity:0.65;"></div>
+      <div class="dist-bar" style="height:70%;background:#97C459;opacity:0.78;"></div>
+      <div class="dist-bar" style="height:55%;background:#97C459;opacity:0.7;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+  <div class="prob-card">
+    <div class="prob-title">XGBoost</div>
+    <div class="dist-bar-wrap">
+      <div class="dist-bar" style="height:75%;background:#F09595;opacity:0.75;"></div>
+      <div class="dist-bar" style="height:100%;background:#F09595;opacity:0.9;"></div>
+      <div class="dist-bar" style="height:90%;background:#F09595;opacity:0.85;"></div>
+      <div class="dist-bar" style="height:38%;background:#a0a0a0;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:18%;background:#a0a0a0;opacity:0.4;"></div>
+      <div class="dist-bar" style="height:15%;background:#97C459;opacity:0.5;"></div>
+      <div class="dist-bar" style="height:22%;background:#97C459;opacity:0.55;"></div>
+      <div class="dist-bar" style="height:38%;background:#97C459;opacity:0.6;"></div>
+      <div class="dist-bar" style="height:60%;background:#97C459;opacity:0.72;"></div>
+      <div class="dist-bar" style="height:75%;background:#97C459;opacity:0.8;"></div>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin:4px 0;"></div>
+    <div style="font-size:10px;color:var(--text-muted);display:flex;justify-content:space-between;"><span>0.0</span><span>threshold 0.5</span><span>1.0</span></div>
+  </div>
+</div>
+<div class="prob-legend" style="margin-top:6px;">
+  <div class="prob-leg-item"><div class="leg-dot" style="background:#F09595;"></div>Actual dead (0)</div>
+  <div class="prob-leg-item"><div class="leg-dot" style="background:#97C459;"></div>Actual survived (1)</div>
+</div>
+
+<div class="section-title">Final ensemble — soft-voting result</div>
+<div class="ensemble-card">
+  <div>
+    <div style="font-size:12px;color:#8ab4d4;margin-bottom:8px;">Confusion matrix</div>
+    <div class="ens-cm">
+      <div class="ens-cell ens-tn"><div class="num">100</div><div class="lbl">TN</div></div>
+      <div class="ens-cell ens-fp"><div class="num">10</div><div class="lbl">FP</div></div>
+      <div class="ens-cell ens-fn"><div class="num">21</div><div class="lbl">FN</div></div>
+      <div class="ens-cell ens-tp"><div class="num">48</div><div class="lbl">TP</div></div>
+    </div>
+  </div>
+  <div class="ens-metric"><div class="val highlight">82.7%</div><div class="key">Accuracy</div></div>
+  <div class="ens-metric"><div class="val">82.8%</div><div class="key">Precision</div></div>
+  <div class="ens-metric"><div class="val">75.6%</div><div class="key">F1 score</div></div>
+</div>
+
+<div class="footer-row">
+  <div class="tools">
+    <span class="tool-chip">Python</span>
+    <span class="tool-chip">scikit-learn</span>
+    <span class="tool-chip">XGBoost</span>
+    <span class="tool-chip">pandas</span>
+    <span class="tool-chip">matplotlib</span>
+    <span class="tool-chip">seaborn</span>
+  </div>
+  <span class="footer-note">github.com/[kullanıcı-adın]/titanic-ml</span>
+</div>
+
+</div>
